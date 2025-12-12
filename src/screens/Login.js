@@ -14,7 +14,7 @@ const Container = styled.View`
 const Login = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const passwordRef = useRef();
+    const passwordRef = useRef(null);
 
   return (
     <Container>
@@ -23,7 +23,7 @@ const Login = ({ navigation }) => {
         label="Email"
         value={email}
         onChangeText={text => setEmail(text)}
-        onSubmitEditing={() => passwordRef.current.focus()}
+        onSubmitEditing={() => passwordRef.current?.focus()}
         placeholder="Email"
         returnKeyType="next"
       />
