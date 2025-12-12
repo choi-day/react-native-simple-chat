@@ -1,10 +1,11 @@
-// src/screens/Signup.js
 import React, { useState, useRef, useEffect } from 'react';
+import { Alert } from 'react-native';
 import styled from 'styled-components/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Image, Input, Button } from '../components';
 import { validateEmail, removeWhitespace } from '../utils/common';
-import { images } from '../utils/images'
+import { images } from '../utils/images';
+import { signup } from '../utils/firebase';
 
 const Container = styled.View`
   flex: 1;
@@ -24,7 +25,7 @@ const ErrorText = styled.Text`
 `;
 
 const Signup = ({ navigation }) => {
-  const [photoUrl, setPhotoUrl] = useState(images.photo)
+  const [photoUrl, setPhotoUrl] = useState(images.photo);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -62,8 +63,43 @@ useEffect(() => {
     setDisabled(!(name && email && password && passwordConfirm && !errorMessage));
   }, [name, email, password, passwordConfirm, errorMessage]);
 
-  const _handleSignupButtonPress = () => {
-    // TODO: signup logic
+  const _handleSignupButtonPress = async () => {
+    try {
+      if (disabled) return;
+
+      const trimmedName = name.trim();
+      const trimmedEmail = removeWhitespace(email);
+      const trimmedPassword = removeWhitespace(password);
+
+      if (!trimmedName) {
+        Alert.alert('Signup Error', 'Please enter your name.');
+        return;
+      }
+      if (!validateEmail(trimmedEmail)) {
+        Alert.alert('Signup Error', 'Please verify your email.');
+        return;
+      }
+      if (trimmedPassword.length < 6) {
+        Alert.alert('Signup Error', 'The password must contain 6 characters at least.');
+        return;
+      }
+      if (trimmedPassword !== removeWhitespace(passwordConfirm)) {
+        Alert.alert('Signup Error', 'Passwords need to match.');
+        return;
+      }
+
+      const user = await signup({
+        email: trimmedEmail,
+        password: trimmedPassword,
+        name: trimmedName,
+        photoUrl,
+      });
+
+      Alert.alert('Signup Success', user?.email ?? trimmedEmail);
+      navigation.navigate('Login');
+    } catch (e) {
+      Alert.alert('Signup Error', e?.message ?? 'Unknown error');
+    }
   };
 
   return (
