@@ -72,7 +72,12 @@ useEffect(() => {
       extraScrollHeight={20}
     >
       <Container>
-        <Image rounded url={photoUrl} showButton/>
+        <Image
+        rounded 
+        url={photoUrl} 
+        showButton
+        onChangeImage = {url => setPhotoUrl(url)}
+        />
 
         <Input
           label="Name"
