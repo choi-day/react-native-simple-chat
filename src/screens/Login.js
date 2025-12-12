@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components/native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Image, Input } from '../components';
 import { images } from '../utils/images';
 
@@ -12,32 +13,39 @@ const Container = styled.View`
 `;
 
 const Login = ({ navigation }) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const passwordRef = useRef(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const passwordRef = useRef(null);
 
   return (
-    <Container>
-      <Image url={images.logo} imageStyle={{ borderRadius: 8 }} />
-      <Input
-        label="Email"
-        value={email}
-        onChangeText={text => setEmail(text)}
-        onSubmitEditing={() => passwordRef.current?.focus()}
-        placeholder="Email"
-        returnKeyType="next"
-      />
-      <Input
-        ref = {passwordRef}
-        label="Password"
-        value={password}
-        onChangeText={text => setPassword(text)}
-        onSubmitEditing={() => {}}
-        placeholder="Password"
-        returnKeyType="done"
-        isPassword
-      />
-    </Container>
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flex: 1 }}
+      extraScrollHeight={20}
+    >
+      <Container>
+        <Image url={images.logo} imageStyle={{ borderRadius: 8 }} />
+
+        <Input
+          label="Email"
+          value={email}
+          onChangeText={text => setEmail(text)}
+          onSubmitEditing={() => passwordRef.current?.focus()}
+          placeholder="Email"
+          returnKeyType="next"
+        />
+
+        <Input
+          ref={passwordRef}
+          label="Password"
+          value={password}
+          onChangeText={text => setPassword(text)}
+          onSubmitEditing={() => {}}
+          placeholder="Password"
+          returnKeyType="done"
+          isPassword
+        />
+      </Container>
+    </KeyboardAwareScrollView>
   );
 };
 
