@@ -65,28 +65,10 @@ useEffect(() => {
 
   const _handleSignupButtonPress = async () => {
     try {
-      if (disabled) return;
-
       const trimmedName = name.trim();
       const trimmedEmail = removeWhitespace(email);
       const trimmedPassword = removeWhitespace(password);
-
-      if (!trimmedName) {
-        Alert.alert('Signup Error', 'Please enter your name.');
-        return;
-      }
-      if (!validateEmail(trimmedEmail)) {
-        Alert.alert('Signup Error', 'Please verify your email.');
-        return;
-      }
-      if (trimmedPassword.length < 6) {
-        Alert.alert('Signup Error', 'The password must contain 6 characters at least.');
-        return;
-      }
-      if (trimmedPassword !== removeWhitespace(passwordConfirm)) {
-        Alert.alert('Signup Error', 'Passwords need to match.');
-        return;
-      }
+      const trimmedPasswordConfirm = removeWhitespace(passwordConfirm);
 
       const user = await signup({
         email: trimmedEmail,
@@ -95,10 +77,10 @@ useEffect(() => {
         photoUrl,
       });
 
-      Alert.alert('Signup Success', user?.email ?? trimmedEmail);
-      navigation.navigate('Login');
+      console.log(user);
+      Alert.alert('Signup Success', user.email);
     } catch (e) {
-      Alert.alert('Signup Error', e?.message ?? 'Unknown error');
+      Alert.alert('Signup Error', e.message);
     }
   };
 
