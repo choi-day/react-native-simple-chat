@@ -6,48 +6,50 @@ import * as Font from 'expo-font';
 import { ThemeProvider } from 'styled-components/native';
 import { theme } from './theme';
 import Navigation from './navigations';
+import { ProgressProvider } from './contexts';
 import { images } from './utils/images';
 
 const cacheImages = images => {
-return images.map(image => {
+  return images.map(image => {
     if (typeof image === 'string') {
-    return Image.prefetch(image);
+      return Image.prefetch(image);
     } else {
-    return Asset.fromModule(image).downloadAsync();
+      return Asset.fromModule(image).downloadAsync();
     }
-});
+  });
 };
 
 const cacheFonts = fonts => {
-return fonts.map(font => Font.loadAsync(font));
+  return fonts.map(font => Font.loadAsync(font));
 };
 
 const App = () => {
-const [isReady, setIsReady] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
-const _loadAssets = async () => {
-    const imageAssets = cacheImages([require('../assets/splash.png'),
-        ...Object.values(images),
+  const _loadAssets = async () => {
+    const imageAssets = cacheImages([
+      require('../assets/splash.png'),
+      ...Object.values(images),
     ]);
     const fontAssets = cacheFonts([]);
 
     await Promise.all([...imageAssets, ...fontAssets]);
-};
+  };
 
-return isReady ? (
-    <>
+  return isReady ? (
     <ThemeProvider theme={theme}>
+      <ProgressProvider>
         <StatusBar barStyle="dark-content" />
         <Navigation />
+      </ProgressProvider>
     </ThemeProvider>
-    </>
-) : (
+  ) : (
     <AppLoading
-    startAsync={_loadAssets}
-    onFinish={() => setIsReady(true)}
-    onError={console.warn}
+      startAsync={_loadAssets}
+      onFinish={() => setIsReady(true)}
+      onError={console.warn}
     />
-);
+  );
 };
 
 export default App;
