@@ -1,24 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/native';
-import { Text, Button } from 'react-native';
-import { Image } from '../components';
-import {images} from '../utils/images';
+import { Image, Input } from '../components';
+import { images } from '../utils/images';
 
 const Container = styled.View`
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    background-color: ${({ theme }) => theme.background};
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme.background};
+  padding: 20px;
 `;
 
 const Login = ({ navigation }) => {
-    return (
-        <Container>
-            <Image uri={images.logo} imageStyle={{borderRadius: 8}}/>
-            <Text style={{ fontSize: 30 }}>Login Screen</Text>
-            <Button title="Signup" onPress={() => navigation.navigate('Signup')} />
-        </Container>
-    );
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  return (
+    <Container>
+      <Image url={images.logo} imageStyle={{ borderRadius: 8 }} />
+      <Input
+        label="Email"
+        value={email}
+        onChangeText={text => setEmail(text)}
+        onSubmitEditing={() => {}}
+        placeholder="Email"
+        returnKeyType="next"
+      />
+      <Input
+        label="Password"
+        value={password}
+        onChangeText={text => setPassword(text)}
+        onSubmitEditing={() => {}}
+        placeholder="Password"
+        returnKeyType="done"
+        isPassword
+      />
+    </Container>
+  );
 };
 
 export default Login;
