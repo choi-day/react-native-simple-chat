@@ -56,7 +56,9 @@ const Input = forwardRef(
           onFocus={() => setIsFocused(true)}
           onBlur={() => {
             setIsFocused(false);
-            onBlur();
+              if (typeof onBlur === 'function') {
+                onBlur();
+            }
           }}
           placeholder={placeholder}
           secureTextEntry={isPassword}
