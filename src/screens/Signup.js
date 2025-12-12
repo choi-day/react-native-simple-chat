@@ -10,7 +10,7 @@ const Container = styled.View`
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.background};
-  padding: 0 20px;
+  padding: 40px 20px;
 `;
 
 const ErrorText = styled.Text`
@@ -33,9 +33,12 @@ const Signup = ({ navigation }) => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const passwordConfirmRef = useRef(null);
+  const didMountRef = useRef();
 
-  useEffect(() => {
+useEffect(() => {
+  if (didMountRef.current) {
     let _errorMessage = '';
+
     if (!name) {
       _errorMessage = 'Please enter your name.';
     } else if (!validateEmail(email)) {
@@ -47,9 +50,12 @@ const Signup = ({ navigation }) => {
     } else {
       _errorMessage = '';
     }
-    setErrorMessage(_errorMessage);
-  }, [name, email, password, passwordConfirm]);
 
+    setErrorMessage(_errorMessage);
+  } else {
+    didMountRef.current = true;
+  }
+}, [name, email, password, passwordConfirm]);
   useEffect(() => {
     setDisabled(!(name && email && password && passwordConfirm && !errorMessage));
   }, [name, email, password, passwordConfirm, errorMessage]);
@@ -59,7 +65,7 @@ const Signup = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAwareScrollView
+    <KeyboardAwareScrollView 
       contentContainerStyle={{ flex: 1 }}
       extraScrollHeight={20}
     >
