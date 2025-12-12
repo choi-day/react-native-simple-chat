@@ -1,3 +1,5 @@
+import { ImageBackground } from 'react-native';
+
 const colors = {
   white: '#ffffff',
   black: '#000000',
@@ -9,5 +11,7 @@ const colors = {
 
 export const theme = {
   background: colors.white,
-  text: colors.black
+  text: colors.black,
+
+  ImageBackground: colors.grey_0,
 }
