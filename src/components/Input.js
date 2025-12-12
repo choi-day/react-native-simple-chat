@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import styled from 'styled-components/native';
 import PropTypes from 'prop-types';
 
@@ -27,44 +27,50 @@ const StyledTextInput = styled.TextInput.attrs(({ theme }) => ({
   border-radius: 4px;
 `;
 
-const Input = ({
-  label,
-  value,
-  onChangeText,
-  onSubmitEditing,
-  onBlur,
-  placeholder,
-  isPassword,
-  returnKeyType,
-  maxLength,
-}) => {
-  const [isFocused, setIsFocused] = useState(false);
+const Input = forwardRef(
+  (
+    {
+      label,
+      value,
+      onChangeText,
+      onSubmitEditing,
+      onBlur,
+      placeholder,
+      isPassword,
+      returnKeyType,
+      maxLength,
+    },
+    ref
+  ) => {
+    const [isFocused, setIsFocused] = useState(false);
 
-  return (
-    <Container>
-      <Label isFocused={isFocused}>{label}</Label>
-      <StyledTextInput
-        isFocused={isFocused}
-        value={value}
-        onChangeText={onChangeText}
-        onSubmitEditing={onSubmitEditing}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => {
-          setIsFocused(false);
-          onBlur();
-        }}
-        placeholder={placeholder}
-        secureTextEntry={isPassword}
-        returnKeyType={returnKeyType}
-        maxLength={maxLength}
-        autoCapitalize="none"
-        autoCorrect={false}
-        textContentType="none" // iOS only
-        underlineColorAndroid="transparent" // Android only
-      />
-    </Container>
-  );
-};
+    return (
+      <Container>
+        <Label isFocused={isFocused}>{label}</Label>
+        <StyledTextInput
+          ref={ref}
+          isFocused={isFocused}
+          value={value}
+          onChangeText={onChangeText}
+          onSubmitEditing={onSubmitEditing}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => {
+            setIsFocused(false);
+            onBlur();
+          }}
+          placeholder={placeholder}
+          secureTextEntry={isPassword}
+          returnKeyType={returnKeyType}
+          maxLength={maxLength}
+          autoCapitalize="none"
+          autoCorrect={false}
+          textContentType="none" // iOS only
+          underlineColorAndroid="transparent" // Android only
+        />
+      </Container>
+    );
+  }
+);
 
 Input.defaultProps = {
   onBlur: () => {},
