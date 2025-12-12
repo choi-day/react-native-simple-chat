@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Alert } from 'react-native';
 import { Image, Input, Button } from '../components';
 import { images } from '../utils/images';
+import { login } from '../utils/firebase';
 import { validateEmail, removeWhitespace } from '../utils/common';
 import {useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -49,7 +51,14 @@ const Login = ({ navigation }) => {
     setPassword(removeWhitespace(password));
   };
 
-  const _handleLoginButtonPress = () => {};
+  const _handleLoginButtonPress = async () => {
+    try {
+      const user = await login({ email, password });
+      Alert.alert('Login Success', user.email);
+    } catch (e) {
+      Alert.alert('Login Error', e.message);
+    }
+  };
 
   return (
     <KeyboardAwareScrollView
@@ -80,11 +89,10 @@ const Login = ({ navigation }) => {
         />
 
         <ErrorText>{errorMessage}</ErrorText>
-        <Button title="Login" onPress={_handleLoginButtonPress} />
+        <Button title="Login" onPress={_handleLoginButtonPress} disabled={disabled} />
         <Button
           title="Sign up with email"
           onPress={() => navigation.navigate('Signup')}
-          disabled={disabled}
         />
       </Container>
     </KeyboardAwareScrollView>
