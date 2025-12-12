@@ -14,7 +14,7 @@ const Container = styled.View`
 const Login = ({ navigation }) => {
     return (
         <Container>
-            <Image url={images.logo} imageStyle={{borderRadius: 8}}/>
+            <Image uri={images.logo} imageStyle={{borderRadius: 8}}/>
             <Text style={{ fontSize: 30 }}>Login Screen</Text>
             <Button title="Signup" onPress={() => navigation.navigate('Signup')} />
         </Container>
