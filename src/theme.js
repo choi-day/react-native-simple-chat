@@ -14,4 +14,7 @@ export const theme = {
   text: colors.black,
 
   ImageBackground: colors.grey_0,
+  label: colors.grey_1,
+  inputPlaceholder: colors.grey_1,
+  inputBorder: colors.grey_1,
 }
