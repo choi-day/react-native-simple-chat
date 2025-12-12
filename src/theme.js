@@ -12,6 +12,7 @@ const colors = {
 export const theme = {
   background: colors.white,
   text: colors.black,
+  errorText: colors.red,
 
   ImageBackground: colors.grey_0,
   label: colors.grey_1,
